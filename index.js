@@ -1,7 +1,6 @@
 let FS = require('fs');
 
 // Read command line arguments & assign defaults
-
 let inputTweetTextFilePath = process.argv[2];
 let outputFirstWordProbabilityFilePath = process.argv[3];
 let outputTransitionMatrixFilePath = process.argv[4];
@@ -30,19 +29,11 @@ function onTweetFileReadFinish(error, tweetsFile){
   calculateFirstWordsProbabilities(tweets);
   calculateMarkovTransitions(tweets);
 
-  //console.log(markovTransition);
-  //console.log(tweetFirstWordsProbability);
-
-  generateTweet();
-  // generateTweet();
-  // generateTweet();
-  // generateTweet();
-  // generateTweet();
-  // generateTweet();
-  // generateTweet();
-  // generateTweet();
   FS.writeFile(outputTransitionMatrixFilePath, JSON.stringify(markovTransition));
   FS.writeFile(outputFirstWordProbabilityFilePath, JSON.stringify(tweetFirstWordsProbability));
+
+  // Generate a tweet using the calculated transition matrix values
+  generateTweet();
 }
 
 function calculateFirstWordsProbabilities(tweets)
@@ -131,6 +122,7 @@ function generateTweet() {
 
   generatedTweet = tweetWordArray.join(' ');
   console.log(generatedTweet);
+  return generatedTweet;
 }
 
 function getNextWord(wordTransitionArray) {
