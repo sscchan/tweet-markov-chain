@@ -1,6 +1,24 @@
 let FS = require('fs');
 
-FS.readFile('./resources/trump2016tweets.txt','utf8', onTweetFileReadFinish);
+// Read command line arguments & assign defaults
+
+let inputTweetTextFilePath = process.argv[2];
+let outputFirstWordProbabilityFilePath = process.argv[3];
+let outputTransitionMatrixFilePath = process.argv[4];
+
+if (inputTweetTextFilePath === undefined) {
+  inputTweetTextFilePath = './resources/trump2016tweets.txt';
+}
+
+if (outputFirstWordProbabilityFilePath === undefined) {
+  outputFirstWordProbabilityFilePath = './output/markovTransition.json';
+}
+
+if (outputTransitionMatrixFilePath === undefined) {
+  outputTransitionMatrixFilePath = './output/tweetFirstWordsProbability.json';
+}
+
+FS.readFile(inputTweetTextFilePath,'utf8', onTweetFileReadFinish);
 
 let markovTransition = {};
 let tweetFirstWordsProbability = [];
@@ -23,8 +41,8 @@ function onTweetFileReadFinish(error, tweetsFile){
   // generateTweet();
   // generateTweet();
   // generateTweet();
-  FS.writeFile('./resources/markovTransition.json', JSON.stringify(markovTransition));
-  FS.writeFile('./resources/tweetFirstWordsProbability.json', JSON.stringify(tweetFirstWordsProbability));
+  FS.writeFile(outputTransitionMatrixFilePath, JSON.stringify(markovTransition));
+  FS.writeFile(outputFirstWordProbabilityFilePath, JSON.stringify(tweetFirstWordsProbability));
 }
 
 function calculateFirstWordsProbabilities(tweets)
